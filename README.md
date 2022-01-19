@@ -6,11 +6,6 @@ Pecunia is a personal finance management application that helps you to gain insi
 
 **On second note:** don't bother cloning this repository at all, this readme is just about all there is for now.
 
-
-
-
-
-
 ## Prerequisites
 
 * [npm](https://npmjs.com/) installed

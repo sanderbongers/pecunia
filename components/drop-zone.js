@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { DocumentDownloadIcon } from '@heroicons/react/outline'
 
 export default function DropZone({ children }) {
-  let [isVisible, setVisible] = useState(false);
+  const [isVisible, setVisible] = useState(false);
   const [lastTarget, setLastTarget] = useState(null);
 
   function dragEnterHandler(event) {

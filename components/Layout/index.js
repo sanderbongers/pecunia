@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import DropZone from '../components/drop-zone'
+import DropZone from '../DropZone'
 
 export default function Layout({ children }) {
   return (

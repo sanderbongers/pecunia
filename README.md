@@ -8,10 +8,12 @@ Pecunia is a personal finance management application that helps you to gain insi
 
 ## Prerequisites
 
-* [npm](https://npmjs.com/) installed
+- [npm](https://npmjs.com/) installed
+
 ## Author
 
 Sander Bongers <[sander@bonge.rs](mailto:sander@bonge.rs)>
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)

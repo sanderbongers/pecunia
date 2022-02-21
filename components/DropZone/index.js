@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { DocumentDownloadIcon } from '@heroicons/react/outline'
+import Papa from 'papaparse'
+import { guessBank, transformHeader } from '../../lib/transaction-files'
 
 export default function DropZone({ children }) {
   const [isVisible, setVisible] = useState(false)
@@ -28,17 +30,53 @@ export default function DropZone({ children }) {
 
     if (event.dataTransfer.files.length !== 1) {
       // TODO: throw error
+      console.error('DataTransfer does not contain any files')
       return
     }
 
     const file = event.dataTransfer.files[0]
     if (file.type !== 'text/csv') {
       // TODO: throw error
+      console.error('File is not of type text/csv')
       return
     }
 
-    // TODO: Handle upload
-    console.log(file)
+    const reader = new FileReader()
+    reader.onload = function (event) {
+      try {
+        const bankName = guessBank(event.target.result)
+
+        if (bankName === false) {
+          throw 'Bank unknown'
+        }
+      } catch (error) {
+        // TODO: throw error
+        console.error('Bank is unsupported or could not be identified', error)
+        return
+      }
+
+      Papa.parse(event.target.result, {
+        header: true,
+        transformHeader: function (header, index) {
+          return transformHeader(header)
+        },
+        skipEmptyLines: true,
+        complete: function (results, file) {
+          console.log('Parsing complete:', results, file)
+        },
+        error: function (err, file, inputElem, reason) {
+          // TODO: throw error
+          console.error(
+            'Error while parsing the file',
+            err,
+            file,
+            inputElem,
+            reason
+          )
+        },
+      })
+    }
+    reader.readAsText(file)
 
     setVisible(false)
   }
@@ -65,6 +103,7 @@ export default function DropZone({ children }) {
 
   return (
     <>
+      {children}
       <div
         className={
           'absolute w-full h-full top-0 left-0 z-50 bg-neutral-900 text-white text-2xl font-semibold transition-opacity duration-400' +
@@ -85,7 +124,6 @@ export default function DropZone({ children }) {
           </div>
         </div>
       </div>
-      {children}
     </>
   )
 }
